@@ -1,5 +1,5 @@
 const express = require("express");
-const guests = express.Router();
+const router = express.Router();
 
 // queries
 const {
@@ -21,28 +21,38 @@ const {
 } = require("../validations/checkGuests.js");
 
 // GET ALL GUESTS ROUTE
-guests.get("/", async (req, res) => {
-  const allGuests = await getAllGuests();
-  if (allGuests[0]) {
-    res.status(200).json(allGuests);
-  } else {
-    res.status(500).json({ error: "There was a server error" });
+router.get("/", async (req, res) => {
+  try {
+    const allGuests = await getAllGuests();
+    if (allGuests[0]) {
+      res.status(200).json(allGuests);
+    } else {
+      res.status(500).json({ error: "There was a server error" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch guests" });
   }
 });
 
 // GET ONE GUEST ROUTE
-guests.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const oneGuest = await getOneGuest(id);
-  if (oneGuest) {
-    res.status(200).json(oneGuest);
-  } else {
-    res.status(404).json({ error: "Guest Not Found" });
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const guest = await getGuest(id);
+    if (guest) {
+      res.status(200).json(guest);
+    } else {
+      res.status(404).json({ error: "Guest Not Found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "Failed to fetch guest" });
   }
 });
 
 // CREATE ROUTE
-guests.post(
+router.post(
   "/",
   checkNameLast,
   checkNameFirst,
@@ -51,14 +61,14 @@ guests.post(
   checkBooleanRsvp,
   checkBooleanAttending,
   async (req, res) => {
-    const body = req.body;
-    const guest = await createGuest(body);
+    // const body = req.body;
+    const guest = await createGuest(req.body);
     res.status(200).json(guest);
   }
 );
 
 // UPDATE ROUTE
-guests.put(
+router.put(
   "/:id",
   checkNameLast,
   checkNameFirst,
@@ -67,26 +77,36 @@ guests.put(
   checkBooleanRsvp,
   checkBooleanAttending,
   async (req, res) => {
-    const { id } = req.params;
-    const body = req.body;
-    const updatedGuest = await updateGuest(id, body);
-    if (updatedGuest.id) {
-      res.status(200).json(updatedGuest);
-    } else {
-      res.status(404).json({ error: "Guest Not Found" });
+    try {
+      const { id } = req.params;
+      const body = req.body;
+      const updatedGuest = await updateGuest(id, body);
+      if (updatedGuest.id) {
+        res.status(200).json(updatedGuest);
+      } else {
+        res.status(404).json({ error: "Guest Not Found" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(404).json({ error: "Failed to update guest" });
     }
   }
 );
 
 // DELETE ROUTE
-guests.delete("/:id", async (req, res) => {
-  const { id } = req.params;
-  const deletedGuest = await deleteGuest(id);
-  if (deletedGuest.id) {
-    res.status(200).json(deletedGuest);
-  } else {
-    res.status(404).json({ error: "Guest Not Found" });
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedGuest = await deleteGuest(id);
+    if (deletedGuest.id) {
+      res.status(200).json(deletedGuest);
+    } else {
+      res.status(404).json({ error: "Guest Not Found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "Failed to delete guest" });
   }
 });
 
-module.exports = guests;
+module.exports = router;

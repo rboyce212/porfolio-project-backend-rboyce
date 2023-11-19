@@ -21,7 +21,7 @@ const getGuest = async (id) => {
 const createGuest = async (guest) => {
   try {
     const newGuest = await db.one(
-      "INSERT INTO guest (name_last, name_first, street_address_one, street_address_two, city_state_zip, address_is_confirmed, invite_is_mailed, rsvp_is_received, is_attending, party_total) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+      "INSERT INTO guests (name_last, name_first, street_address_one, street_address_two, city_state_zip, address_is_confirmed, invite_is_mailed, rsvp_is_received, is_attending, party_total) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
       [
         guest.name_last,
         guest.name_first,
@@ -44,7 +44,7 @@ const createGuest = async (guest) => {
 const deleteGuest = async (id) => {
   try {
     const deletedGuest = await db.one(
-      "DELETE FROM games WHERE id = $1 RETURNING *",
+      "DELETE FROM guests WHERE id = $1 RETURNING *",
       id
     );
     return deletedGuest;
