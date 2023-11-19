@@ -1,6 +1,6 @@
 \c colors_dev;
 
-INSERT INTO games (name_last, name_first, street_address_one, street_address_two, city_state_zip, address_is_confirmed, invite_is_mailed, rsvp_is_received, is_attending, party_total) VALUES
+INSERT INTO guests (name_last, name_first, street_address_one, street_address_two, city_state_zip, address_is_confirmed, invite_is_mailed, rsvp_is_received, is_attending, party_total) VALUES
 ('Woodall', 'Rikki', '509 67th Ave N', '', 'Myrtle Beach, SC 29572', false, false, false, false, 0),
 ('Woodall', 'Richard', '5604 Woodside Ave', '', 'Myrtle Beach, SC 29577', false, false, false, false, 0),
 ('Woodall', 'Allan', '601 Addison Ct', '', 'Myrtle Beach, SC 29577', false, false, false, false, 0),

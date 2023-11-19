@@ -15,6 +15,6 @@ address_is_confirmed BOOLEAN DEFAULT false,
 invite_is_mailed BOOLEAN DEFAULT false,
 rsvp_is_received BOOLEAN DEFAULT false,
 is_attending BOOLEAN DEFAULT false,
-party_total INT SET DEFAULT 0,
+party_total INT DEFAULT 0,
 CHECK (party_total >= 0)
 );
