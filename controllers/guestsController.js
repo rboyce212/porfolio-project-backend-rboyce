@@ -67,32 +67,6 @@ router.post(
   }
 );
 
-// UPDATE ROUTE
-router.put(
-  "/:id",
-  checkNameLast,
-  checkNameFirst,
-  checkBooleanAddress,
-  checkBooleanInvite,
-  checkBooleanRsvp,
-  checkBooleanAttending,
-  async (req, res) => {
-    try {
-      const { id } = req.params;
-      const body = req.body;
-      const updatedGuest = await updateGuest(id, body);
-      if (updatedGuest.id) {
-        res.status(200).json(updatedGuest);
-      } else {
-        res.status(404).json({ error: "Guest Not Found" });
-      }
-    } catch (error) {
-      console.error(error);
-      res.status(404).json({ error: "Failed to update guest" });
-    }
-  }
-);
-
 // DELETE ROUTE
 router.delete("/:id", async (req, res) => {
   try {
@@ -108,5 +82,35 @@ router.delete("/:id", async (req, res) => {
     res.status(404).json({ error: "Failed to delete guest" });
   }
 });
+
+// UPDATE ROUTE
+router.put(
+  "/:id",
+  checkNameLast,
+  checkNameFirst,
+  checkBooleanAddress,
+  checkBooleanInvite,
+  checkBooleanRsvp,
+  checkBooleanAttending,
+  async (req, res) => {
+    const { id } = req.params;
+    try {
+      const currentGuest = await getGuest(id);
+      if (currentGuest.id) {
+        const updatedGuest = await updateGuest(id, {
+          ...currentGuest,
+          ...req.body,
+        });
+        res.json(updatedGuest);
+      } else {
+        console.log(`Database error: ${currentGuest}`);
+        throw `No guest found with id: ${id}`;
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(404).json({ error: "Failed to update guest", message: error });
+    }
+  }
+);
 
 module.exports = router;

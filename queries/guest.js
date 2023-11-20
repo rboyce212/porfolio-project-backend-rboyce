@@ -68,6 +68,7 @@ const updateGuest = async (id, guest) => {
         guest.rsvp_is_received,
         guest.is_attending,
         guest.party_total,
+        id,
       ]
     );
     return updatedGuest;
