@@ -18,7 +18,7 @@ const getGuest = async (id) => {
   }
 };
 
-const createGuest = async (guest) => {
+const addGuest = async (guest) => {
   try {
     const newGuest = await db.one(
       "INSERT INTO guests (name_last, name_first, street_address_one, street_address_two, city_state_zip, address_is_confirmed, invite_is_mailed, rsvp_is_received, is_attending, party_total) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
@@ -80,7 +80,7 @@ const updateGuest = async (id, guest) => {
 module.exports = {
   getAllGuests,
   getGuest,
-  createGuest,
+  addGuest,
   deleteGuest,
   updateGuest,
 };
