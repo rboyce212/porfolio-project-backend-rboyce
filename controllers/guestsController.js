@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   getAllGuests,
   getGuest,
-  createGuest,
+  addGuest,
   deleteGuest,
   updateGuest,
 } = require("../queries/guest.js");
@@ -62,7 +62,7 @@ router.post(
   checkBooleanAttending,
   async (req, res) => {
     // const body = req.body;
-    const guest = await createGuest(req.body);
+    const guest = await addGuest(req.body);
     res.status(200).json(guest);
   }
 );
